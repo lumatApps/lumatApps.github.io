@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Chen - Mobile Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        section {
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            color: white;
+            padding: 6rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        /* Apps Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .app-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 18px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .app-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .app-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .download-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .download-btn {
+            background: #333;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #555;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .skill-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+        }
+
+        .contact-item h4 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .contact-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .content-section {
+                padding: 2rem 1rem;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Page Navigation */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Modal for App Details */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .screenshot {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Alex Chen</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showPage('apps')">Apps</a></li>
+                <li><a href="#" onclick="showPage('about')">About</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <section class="hero">
+                <div class="container">
+                    <h1>Mobile Developer</h1>
+                    <p>Creating beautiful and functional mobile experiences for iOS and Android</p>
+                    <a href="#" onclick="showPage('apps')" class="cta-button">View My Apps</a>
+                </div>
+            </section>
+
+            <div class="container">
+                <section class="content-section">
+                    <h2 class="section-title">Featured Apps</h2>
+                    <div class="apps-grid">
+                        <div class="app-card" onclick="openAppModal('taskmaster')">
+                            <div class="app-icon">📱</div>
+                            <h3>TaskMaster Pro</h3>
+                            <p>A powerful task management app with smart scheduling and team collaboration features.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">React Native</span>
+                                <span class="tech-tag">Firebase</span>
+                                <span class="tech-tag">Redux</span>
+                            </div>
+                            <div class="download-links">
+                                <a href="#" class="download-btn">App Store</a>
+                                <a href="#" class="download-btn">Google Play</a>
+                            </div>
+                        </div>
+
+                        <div class="app-card" onclick="openAppModal('fittrack')">
+                            <div class="app-icon">💪</div>
+                            <h3>FitTrack</h3>
+                            <p>Comprehensive fitness tracking with AI-powered workout recommendations and progress analytics.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">Swift</span>
+                                <span class="tech-tag">HealthKit</span>
+                                <span class="tech-tag">Core ML</span>
+                            </div>
+                            <div class="download-links">
+                                <a href="#" class="download-btn">App Store</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Apps Page -->
+        <div id="apps" class="page">
+            <div class="container">
+                <section class="content-section" style="margin-top: 2rem;">
+                    <h2 class="section-title">My Apps Portfolio</h2>
+                    <div class="apps-grid">
+                        <div class="app-card" onclick="openAppModal('taskmaster')">
+                            <div class="app-icon">📱</div>
+                            <h3>TaskMaster Pro</h3>
+                            <p>A comprehensive task management solution designed for teams and individuals. Features include smart scheduling, priority management, and real-time collaboration.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">React Native</span>
+                                <span class="tech-tag">Firebase</span>
+                                <span class="tech-tag">Redux</span>
+                                <span class="tech-tag">Push Notifications</span>
+                            </div>
+                            <div class="download-links">
+                                <a href="#" class="download-btn">App Store</a>
+                                <a href="#" class="download-btn">Google Play</a>
+                            </div>
+                        </div>
+
+                        <div class="app-card" onclick="openAppModal('fittrack')">
+                            <div class="app-icon">💪</div>
+                            <h3>FitTrack</h3>
+                            <p>AI-powered fitness companion that tracks workouts, monitors progress, and provides personalized recommendations based on your fitness goals.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">Swift</span>
+                                <span class="tech-tag">HealthKit</span>
+                                <span class="tech-tag">Core ML</span>
+                                <span class="tech-tag">CloudKit</span>
+                            </div>
+                            <div class="download-links">
+                                <a href="#" class="download-btn">App Store</a>
+                            </div>
+                        </div>
+
+                        <div class="app-card" onclick="openAppModal('budgetwise')">
+                            <div class="app-icon">💰</div>
+                            <h3>BudgetWise</h3>
+                            <p>Smart budgeting app with expense tracking, bill reminders, and financial insights to help users achieve their financial goals.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">Flutter</span>
+                                <span class="tech-tag">SQLite</span>
+                                <span class="tech-tag">Plaid API</span>
+                            </div>
+                            <div class="download-links">
+                                <a href="#" class="download-btn">Google Play</a>
+                            </div>
+                        </div>
+
+                        <div class="app-card" onclick="openAppModal('weatherly')">
+                            <div class="app-icon">🌤️</div>
+                            <h3>Weatherly</h3>
+                            <p>Beautiful weather app with hourly forecasts, severe weather alerts, and customizable widgets for your home screen.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">Kotlin</span>
+                                <span class="tech-tag">Jetpack Compose</span>
+                                <span class="tech-tag">OpenWeather API</span>
+                            </div>
+                            <div class="download-links">
+                                <a href="#" class="download-btn">Google Play</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="container">
+                <section class="content-section" style="margin-top: 2rem;">
+                    <h2 class="section-title">About Me</h2>
+                    <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: #666;">
+                        Passionate mobile developer with 5+ years of experience creating intuitive and performant mobile applications. 
+                        I specialize in both native and cross-platform development, with a focus on user experience and clean code architecture.
+                    </p>
+
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: #333;">Technical Skills</h3>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <h4>iOS Development</h4>
+                            <p>Swift, SwiftUI, UIKit, Xcode</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Android Development</h4>
+                            <p>Kotlin, Jetpack Compose, Android Studio</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Cross-Platform</h4>
+                            <p>React Native, Flutter, Xamarin</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Backend & APIs</h4>
+                            <p>Node.js, Firebase, REST APIs</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Database</h4>
+                            <p>SQLite, Realm, Core Data</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Tools & Others</h4>
+                            <p>Git, CI/CD, App Store Optimization</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="container">
+                <section class="content-section" style="margin-top: 2rem;">
+                    <h2 class="section-title">Get In Touch</h2>
+                    <p style="text-align: center; font-size: 1.1rem; margin-bottom: 3rem; color: #666;">
+                        Let's discuss your next mobile app project or potential collaboration opportunities.
+                    </p>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <h4>Email</h4>
+                            <a href="mailto:alex@example.com">alex@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <h4>LinkedIn</h4>
+                            <a href="https://linkedin.com/in/alexchen" target="_blank">linkedin.com/in/alexchen</a>
+                        </div>
+                        <div class="contact-item">
+                            <h4>GitHub</h4>
+                            <a href="https://github.com/alexchen" target="_blank">github.com/alexchen</a>
+                        </div>
+                        <div class="contact-item">
+                            <h4>Location</h4>
+                            <p>San Francisco, CA</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- App Detail Modal -->
+    <div id="appModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAppModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Alex Chen. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // App detail data
+        const appDetails = {
+            taskmaster: {
+                title: "TaskMaster Pro",
+                icon: "📱",
+                description: "TaskMaster Pro is a comprehensive task management solution designed for teams and individuals who need to stay organized and productive. The app combines intuitive design with powerful features to help users manage their daily workflows efficiently.",
+                features: [
+                    "Smart task scheduling with AI recommendations",
+                    "Real-time team collaboration and communication",
+                    "Priority management with customizable categories",
+                    "Time tracking and productivity analytics",
+                    "Cross-platform synchronization",
+                    "Offline mode support"
+                ],
+                technologies: ["React Native", "Firebase", "Redux", "Push Notifications", "REST APIs"],
+                challenges: "The main challenge was implementing real-time collaboration while maintaining app performance. We solved this by implementing efficient data synchronization and optimizing the Redux state management.",
+                downloads: {
+                    appStore: "#",
+                    googlePlay: "#"
+                }
+            },
+            fittrack: {
+                title: "FitTrack",
+                icon: "💪",
+                description: "FitTrack is an AI-powered fitness companion that helps users achieve their fitness goals through personalized workout recommendations and comprehensive progress tracking.",
+                features: [
+                    "AI-powered workout recommendations",
+                    "Integration with Apple HealthKit",
+                    "Progress tracking with detailed analytics",
+                    "Custom workout creation",
+                    "Social features for motivation",
+                    "Wearable device integration"
+                ],
+                technologies: ["Swift", "HealthKit", "Core ML", "CloudKit", "WidgetKit"],
+                challenges: "Integrating machine learning for personalized recommendations while ensuring user privacy was a key challenge. We implemented on-device ML processing to keep user data secure.",
+                downloads: {
+                    appStore: "#"
+                }
+            },
+            budgetwise: {
+                title: "BudgetWise",
+                icon: "💰",
+                description: "BudgetWise helps users take control of their finances through smart budgeting, expense tracking, and financial insights.",
+                features: [
+                    "Automatic expense categorization",
+                    "Bill reminders and notifications",
+                    "Financial goal setting and tracking",
+                    "Bank account integration",
+                    "Spending analytics and reports",
+                    "Budget alerts and recommendations"
+                ],
+                technologies: ["Flutter", "SQLite", "Plaid API", "Firebase Auth"],
+                challenges: "Ensuring secure handling of financial data while providing seamless user experience required implementing robust encryption and following financial data security standards.",
+                downloads: {
+                    googlePlay: "#"
+                }
+            },
+            weatherly: {
+                title: "Weatherly",
+                icon: "🌤️",
+                description: "Weatherly provides accurate weather forecasts with a beautiful, intuitive interface and customizable widgets.",
+                features: [
+                    "Hourly and 7-day forecasts",
+                    "Severe weather alerts",
+                    "Customizable home screen widgets",
+                    "Multiple location support",
+                    "Weather maps and radar",
+                    "Air quality index monitoring"
+                ],
+                technologies: ["Kotlin", "Jetpack Compose", "OpenWeather API", "WorkManager"],
+                challenges: "Creating smooth animations and transitions while maintaining battery efficiency required careful optimization of UI rendering and API calls.",
+                downloads: {
+                    googlePlay: "#"
+                }
+            }
+        };
+
+        // Modal functions
+        function openAppModal(appId) {
+            const app = appDetails[appId];
+            if (!app) return;
+
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div class="app-icon" style="margin: 0 auto 1rem auto;">${app.icon}</div>
+                    <h2>${app.title}</h2>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">${app.description}</p>
+                
+                <h3 style="margin-bottom: 1rem;">Key Features</h3>
+                <ul style="margin-bottom: 2rem; padding-left: 1.5rem;">
+                    ${app.features.map(feature => `<li style="margin-bottom: 0.5rem;">${feature}</li>`).join('')}
+                </ul>
+                
+                <h3 style="margin-bottom: 1rem;">Technologies Used</h3>
+                <div class="tech-stack" style="margin-bottom: 2rem;">
+                    ${app.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                </div>
+                
+                <h3 style="margin-bottom: 1rem;">Development Challenges</h3>
+                <p style="margin-bottom: 2rem; line-height: 1.6;">${app.challenges}</p>
+                
+                <div class="screenshot-gallery">
+                    <div class="screenshot">Screenshot 1</div>
+                    <div class="screenshot">Screenshot 2</div>
+                    <div class="screenshot">Screenshot 3</div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">Download</h3>
+                    <div class="download-links" style="justify-content: center;">
+                        ${app.downloads.appStore ? `<a href="${app.downloads.appStore}" class="download-btn">App Store</a>` : ''}
+                        ${app.downloads.googlePlay ? `<a href="${app.downloads.googlePlay}" class="download-btn">Google Play</a>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('appModal').style.display = 'block';
+        }
+
+        function closeAppModal() {
+            document.getElementById('appModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('appModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add any initialization code here
+        });
+    </script>
+</body>
+</html>
