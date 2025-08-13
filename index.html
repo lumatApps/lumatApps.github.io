@@ -1,724 +1,497 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Chen - Mobile Developer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jared Tamulynas · Lumat Apps — Mobile Developer (SwiftUI & Jetpack Compose)</title>
+  <meta name="description" content="Jared Tamulynas is a North Carolina–based mobile engineer building thoughtful iOS, watchOS, and Android apps at Lumat Apps with SwiftUI and Jetpack Compose." />
+  <meta name="theme-color" content="#4f46e5" />
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Jared Tamulynas · Lumat Apps — Mobile Developer" />
+  <meta property="og:description" content="SwiftUI & Jetpack Compose specialist crafting polished mobile apps that respect attention and spark motivation." />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:url" content="https://www.lumatapps.com" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg-soft:#0f1733;
+      --text: #0f172a;
+      --muted:#475569;
+      --primary:#4f46e5; /* indigo */
+      --accent:#06b6d4;  /* cyan */
+      --card:#ffffff;
+      --ring: rgba(79,70,229,.15);
+      --shadow: 0 10px 30px rgba(2,6,23,.12);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b1020;
+        --bg-soft:#0e1330;
+        --text:#e5e7eb;
+        --muted:#9ca3af;
+        --card:#0f172a;
+        --ring: rgba(99,102,241,.25);
+        --shadow: 0 10px 30px rgba(2,6,23,.45);
+      }
+    }
 
-        /* Header */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(79,70,229,.35), transparent 60%),
+        radial-gradient(800px 600px at 110% 10%, rgba(6,182,212,.25), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+      line-height:1.65;
+    }
+    img{max-width:100%;display:block}
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
+    .container{max-width:1120px;margin:0 auto;padding:0 20px}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
-        }
+    /* Skip link */
+    .skip{position:absolute;left:-9999px;top:auto}
+    .skip:focus{left:16px;top:16px;background:#fff;color:#111;padding:.5rem .75rem;border-radius:.5rem;box-shadow:var(--shadow);z-index:10001}
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:1000;
+      backdrop-filter:saturate(180%) blur(12px);
+      background: color-mix(in oklab, var(--bg-soft) 75%, transparent);
+      border-bottom:1px solid color-mix(in oklab, var(--text) 10%, transparent);
+    }
+    nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:.75rem;align-items:center;font-weight:700}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent))}
+    .brand a{color:var(--text);text-decoration:none}
+    .nav-links{display:flex;gap:1.25rem;align-items:center}
+    .nav-links a{
+      color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;letter-spacing:.01em;
+      padding:.4rem .6rem;border-radius:.5rem
+    }
+    .nav-links a.active, .nav-links a:hover{color:var(--text);background: color-mix(in oklab, var(--ring) 35%, transparent)}
+    .menu-btn{display:none}
 
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+    /* Hero */
+    .hero{padding:80px 0 48px}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+    .eyebrow{font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
+    h1{font-size:clamp(2rem, 5vw, 3.25rem);line-height:1.15;margin:.35rem 0 1rem}
+    .lead{font-size:clamp(1rem, 2.2vw, 1.2rem);color:var(--muted);max-width:60ch}
+    .cta-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+    .btn{
+      display:inline-flex;align-items:center;gap:.5rem;border:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+      padding:.75rem 1rem;border-radius:.75rem;text-decoration:none;font-weight:700;
+      box-shadow:var(--shadow);transition:transform .15s ease, background .2s ease,border-color .2s ease
+    }
+    .btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border-color:transparent}
+    .btn:hover{transform:translateY(-1px)}
+    .hero-card{
+      background:linear-gradient(180deg, color-mix(in oklab, #fff 7%, transparent), transparent);
+      border:1px solid color-mix(in oklab, var(--text) 10%, transparent);
+      border-radius:18px;padding:18px;box-shadow:var(--shadow)
+    }
+    .hero-card ul{margin:0;padding-left:1.1rem}
+    .hero-card li{margin:.35rem 0;color:var(--muted)}
 
-        .nav-links a:hover, .nav-links a.active {
-            color: #667eea;
-        }
+    /* Sections */
+    section{padding:64px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:28px}
+    .section-title{font-size:clamp(1.5rem, 3.4vw, 2rem);margin:0}
+    .section-sub{color:var(--muted);max-width:65ch}
 
-        /* Main Content */
-        main {
-            margin-top: 80px;
-        }
+    /* Cards & grids */
+    .grid{display:grid;gap:20px}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width: 900px){.hero-grid{grid-template-columns:1fr}.grid-2,.grid-3{grid-template-columns:1fr}}
+    .card{
+      background:var(--card);border:1px solid color-mix(in oklab, var(--text) 10%, transparent);
+      border-radius:16px;padding:18px;box-shadow:var(--shadow)
+    }
+    .card h3{margin:.25rem 0 .5rem;font-size:1.25rem}
+    .muted{color:var(--muted)}
+    .chips{display:flex;gap:.4rem;flex-wrap:wrap;margin:.6rem 0}
+    .chip{font-size:.8rem;padding:.28rem .55rem;border-radius:999px;border:1px solid color-mix(in oklab, var(--text) 12%, transparent)}
+    .card-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem}
+    .card-actions a{font-weight:700;text-decoration:none}
+    .thumb{aspect-ratio:16/10;border-radius:12px;overflow:hidden;border:1px solid color-mix(in oklab, var(--text) 10%, transparent);background:#0b1020}
+    .thumb img{width:100%;height:100%;object-fit:cover}
 
-        section {
-            padding: 4rem 0;
-            margin-bottom: 2rem;
-        }
+    /* Skills */
+    .skill-tile{
+      text-align:center;padding:18px;border-radius:14px;
+      background:linear-gradient(180deg, color-mix(in oklab, #fff 6%, transparent), transparent);
+      border:1px solid color-mix(in oklab, var(--text) 10%, transparent)
+    }
+    .skill-tile h4{margin:.25rem 0 .25rem}
 
-        .hero {
-            text-align: center;
-            color: white;
-            padding: 6rem 0;
-        }
+    /* Contact */
+    .contact{
+      display:grid;gap:16px;grid-template-columns:repeat(4,minmax(0,1fr))
+    }
+    @media (max-width:900px){.contact{grid-template-columns:1fr 1fr}}
+    @media (max-width:560px){.contact{grid-template-columns:1fr}}
+    .contact .tile{
+      padding:18px;border-radius:14px;background:var(--card);
+      border:1px solid color-mix(in oklab, var(--text) 10%, transparent);box-shadow:var(--shadow)
+    }
+    .contact a{color:inherit;text-decoration:none}
+    .contact strong{display:block}
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
+    /* Footer */
+    footer{padding:36px 0;color:var(--muted);border-top:1px solid color-mix(in oklab, var(--text) 10%, transparent);text-align:center}
 
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
+    /* Modal */
+    dialog{
+      border:none;border-radius:16px;max-width:920px;width:92vw;padding:0;background:var(--card);color:var(--text);
+      box-shadow:0 20px 80px rgba(0,0,0,.45)
+    }
+    .modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid color-mix(in oklab, var(--text) 10%, transparent)}
+    .modal-body{padding:16px 20px 22px}
+    .modal-close{background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--muted)}
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+    .gallery .frame{aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid color-mix(in oklab, var(--text) 10%, transparent);background:#0b1020}
 
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Content Sections */
-        .content-section {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            margin: 2rem 0;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            color: #333;
-        }
-
-        /* Apps Grid */
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .app-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 15px;
-            padding: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .app-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 18px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-        }
-
-        .app-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .app-card p {
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tech-tag {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .download-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .download-btn {
-            background: #333;
-            color: white;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-
-        .download-btn:hover {
-            background: #555;
-        }
-
-        /* Skills Section */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .skill-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border-radius: 15px;
-            color: white;
-        }
-
-        .skill-item h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Contact Section */
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .contact-item {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 15px;
-        }
-
-        .contact-item h4 {
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .contact-item a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* Footer */
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .content-section {
-                padding: 2rem 1rem;
-            }
-
-            .apps-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Page Navigation */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Modal for App Details */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-        }
-
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 2rem;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: #000;
-        }
-
-        .screenshot-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .screenshot {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-        }
-    </style>
+    /* Utilities */
+    .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">Alex Chen</div>
-            <ul class="nav-links">
-                <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
-                <li><a href="#" onclick="showPage('apps')">Apps</a></li>
-                <li><a href="#" onclick="showPage('about')">About</a></li>
-                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header>
+    <nav class="container" aria-label="Primary">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <a href="#top" aria-label="Jared Tamulynas · Lumat Apps">Jared Tamulynas · Lumat Apps</a>
+      </div>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+      <div id="menu" class="nav-links">
+        <a href="#work" data-nav>Work</a>
+        <a href="#skills" data-nav>Skills</a>
+        <a href="#about" data-nav>About</a>
+        <a href="#contact" data-nav>Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero container" id="top">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Mobile App Developer</div>
+          <h1>SwiftUI & Jetpack Compose specialist crafting calm, motivating apps.</h1>
+          <p class="lead">
+            I’m <strong>Jared Tamulynas</strong>, a North Carolina–based engineer and the person behind
+            <strong>Lumat Apps</strong>. I build iOS, watchOS, and Android apps with declarative UI,
+            clean architecture, and a product mindset.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#work">See my work</a>
+            <a class="btn" href="mailto:lumat.apps@gmail.com">Email me</a>
+            <a class="btn" href="https://www.linkedin.com/in/jaredtamulynas/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Highlights">
+          <h2 class="sr-only">Highlights</h2>
+          <ul>
+            <li>SwiftUI, Swift Data, HealthKit</li>
+            <li>Kotlin, Jetpack Compose, Room</li>
+            <li>Firebase, Google Cloud, REST APIs</li>
+            <li>App Store Connect & Google Play Console</li>
+            <li>Clean, testable layers • privacy-aware</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Selected work</h2>
+            <p class="section-sub">Small, focused apps that respect attention spans and make progress visible.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <!-- Steps Toward -->
+          <article class="card" aria-labelledby="steps-title">
+            <div class="thumb">
+              <img src="assets/steps-toward-hero.png" alt="Steps Toward — progress visualization & Apple Watch mockups" loading="lazy" />
+            </div>
+            <h3 id="steps-title">Steps Toward — iOS & watchOS Journey Tracking</h3>
+            <p class="muted">
+              Transform your walks into adventures. Track steps toward real destinations with elegant progress visuals and Apple Watch integration.
+            </p>
+            <div class="chips" aria-label="Technologies">
+              <span class="chip">SwiftUI</span>
+              <span class="chip">watchOS</span>
+              <span class="chip">HealthKit</span>
+              <span class="chip">Swift Data</span>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="#" onclick="openProject('steps');return false;" aria-haspopup="dialog">View details</a>
+              <a class="btn" href="https://github.com/lumatApps/steps-toward" target="_blank" rel="noopener">View repo</a>
+              <!-- <a class="btn" href="#" target="_blank" rel="noopener">App Store</a> -->
+            </div>
+          </article>
+
+          <!-- Plaza -->
+          <article class="card" aria-labelledby="plaza-title">
+            <div class="thumb">
+              <img src="assets/plaza-hero.png" alt="Plaza — home & garden tours interface" loading="lazy" />
+            </div>
+            <h3 id="plaza-title">Plaza — Home & Garden Tour Discovery</h3>
+            <p class="muted">
+              Discover beautiful homes and gardens near you. Browse curated tours, save favorites, and explore design inspiration.
+            </p>
+            <div class="chips" aria-label="Technologies">
+              <span class="chip">SwiftUI</span>
+              <span class="chip">MapKit</span>
+              <span class="chip">Firebase</span>
+              <span class="chip">Search & Filters</span>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="#" onclick="openProject('plaza');return false;" aria-haspopup="dialog">View details</a>
+              <a class="btn" href="https://github.com/lumatApps/plaza" target="_blank" rel="noopener">View repo</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Core stack</h2>
+            <p class="section-sub">Declarative UI + simple, testable architecture.</p>
+          </div>
+        </div>
+        <div class="grid grid-3">
+          <div class="skill-tile">
+            <h4>iOS & watchOS</h4>
+            <p class="muted">Swift • SwiftUI • Swift Data • HealthKit</p>
+          </div>
+          <div class="skill-tile">
+            <h4>Android</h4>
+            <p class="muted">Kotlin • Jetpack Compose • Room</p>
+          </div>
+          <div class="skill-tile">
+            <h4>Backend & Tools</h4>
+            <p class="muted">Firebase • GCP • REST • Xcode • Android Studio</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">About Lumat Apps</h2>
+            <p class="section-sub">I create calm, delightful apps with clear UX and honest data use.</p>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Principles</h3>
+            <ul class="muted" style="margin:.6rem 0 0 1.1rem">
+              <li>Delight first — motion, micro-copy, and calm defaults</li>
+              <li>Composable code — SwiftUI/Compose + small, testable layers</li>
+              <li>Privacy-aware — only the data an experience truly needs</li>
             </ul>
-        </nav>
-    </header>
+          </div>
+          <div class="card">
+            <h3>Collaboration</h3>
+            <p class="muted">Product-minded, detail-oriented, and pragmatic. I enjoy shaping features, not just shipping code.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <main>
-        <!-- Home Page -->
-        <div id="home" class="page active">
-            <section class="hero">
-                <div class="container">
-                    <h1>Mobile Developer</h1>
-                    <p>Creating beautiful and functional mobile experiences for iOS and Android</p>
-                    <a href="#" onclick="showPage('apps')" class="cta-button">View My Apps</a>
-                </div>
-            </section>
-
-            <div class="container">
-                <section class="content-section">
-                    <h2 class="section-title">Featured Apps</h2>
-                    <div class="apps-grid">
-                        <div class="app-card" onclick="openAppModal('taskmaster')">
-                            <div class="app-icon">📱</div>
-                            <h3>TaskMaster Pro</h3>
-                            <p>A powerful task management app with smart scheduling and team collaboration features.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">React Native</span>
-                                <span class="tech-tag">Firebase</span>
-                                <span class="tech-tag">Redux</span>
-                            </div>
-                            <div class="download-links">
-                                <a href="#" class="download-btn">App Store</a>
-                                <a href="#" class="download-btn">Google Play</a>
-                            </div>
-                        </div>
-
-                        <div class="app-card" onclick="openAppModal('fittrack')">
-                            <div class="app-icon">💪</div>
-                            <h3>FitTrack</h3>
-                            <p>Comprehensive fitness tracking with AI-powered workout recommendations and progress analytics.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Swift</span>
-                                <span class="tech-tag">HealthKit</span>
-                                <span class="tech-tag">Core ML</span>
-                            </div>
-                            <div class="download-links">
-                                <a href="#" class="download-btn">App Store</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Get in touch</h2>
+            <p class="section-sub">Open to collab, contract work, or indie partnerships.</p>
+          </div>
         </div>
 
-        <!-- Apps Page -->
-        <div id="apps" class="page">
-            <div class="container">
-                <section class="content-section" style="margin-top: 2rem;">
-                    <h2 class="section-title">My Apps Portfolio</h2>
-                    <div class="apps-grid">
-                        <div class="app-card" onclick="openAppModal('taskmaster')">
-                            <div class="app-icon">📱</div>
-                            <h3>TaskMaster Pro</h3>
-                            <p>A comprehensive task management solution designed for teams and individuals. Features include smart scheduling, priority management, and real-time collaboration.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">React Native</span>
-                                <span class="tech-tag">Firebase</span>
-                                <span class="tech-tag">Redux</span>
-                                <span class="tech-tag">Push Notifications</span>
-                            </div>
-                            <div class="download-links">
-                                <a href="#" class="download-btn">App Store</a>
-                                <a href="#" class="download-btn">Google Play</a>
-                            </div>
-                        </div>
-
-                        <div class="app-card" onclick="openAppModal('fittrack')">
-                            <div class="app-icon">💪</div>
-                            <h3>FitTrack</h3>
-                            <p>AI-powered fitness companion that tracks workouts, monitors progress, and provides personalized recommendations based on your fitness goals.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Swift</span>
-                                <span class="tech-tag">HealthKit</span>
-                                <span class="tech-tag">Core ML</span>
-                                <span class="tech-tag">CloudKit</span>
-                            </div>
-                            <div class="download-links">
-                                <a href="#" class="download-btn">App Store</a>
-                            </div>
-                        </div>
-
-                        <div class="app-card" onclick="openAppModal('budgetwise')">
-                            <div class="app-icon">💰</div>
-                            <h3>BudgetWise</h3>
-                            <p>Smart budgeting app with expense tracking, bill reminders, and financial insights to help users achieve their financial goals.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Flutter</span>
-                                <span class="tech-tag">SQLite</span>
-                                <span class="tech-tag">Plaid API</span>
-                            </div>
-                            <div class="download-links">
-                                <a href="#" class="download-btn">Google Play</a>
-                            </div>
-                        </div>
-
-                        <div class="app-card" onclick="openAppModal('weatherly')">
-                            <div class="app-icon">🌤️</div>
-                            <h3>Weatherly</h3>
-                            <p>Beautiful weather app with hourly forecasts, severe weather alerts, and customizable widgets for your home screen.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Kotlin</span>
-                                <span class="tech-tag">Jetpack Compose</span>
-                                <span class="tech-tag">OpenWeather API</span>
-                            </div>
-                            <div class="download-links">
-                                <a href="#" class="download-btn">Google Play</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+        <div class="contact">
+          <div class="tile">
+            <strong>Email</strong>
+            <a href="mailto:lumat.apps@gmail.com" aria-label="Email Jared">lumat.apps@gmail.com</a>
+          </div>
+          <div class="tile">
+            <strong>LinkedIn</strong>
+            <a href="https://www.linkedin.com/in/jaredtamulynas/" target="_blank" rel="noopener">linkedin.com/in/jaredtamulynas</a>
+          </div>
+          <div class="tile">
+            <strong>GitHub</strong>
+            <a href="https://github.com/lumatApps" target="_blank" rel="noopener">github.com/lumatApps</a>
+          </div>
+          <div class="tile">
+            <strong>Portfolio</strong>
+            <a href="https://www.lumatapps.com" target="_blank" rel="noopener">lumatapps.com</a>
+          </div>
         </div>
+      </div>
+    </section>
+  </main>
 
-        <!-- About Page -->
-        <div id="about" class="page">
-            <div class="container">
-                <section class="content-section" style="margin-top: 2rem;">
-                    <h2 class="section-title">About Me</h2>
-                    <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; color: #666;">
-                        Passionate mobile developer with 5+ years of experience creating intuitive and performant mobile applications. 
-                        I specialize in both native and cross-platform development, with a focus on user experience and clean code architecture.
-                    </p>
-
-                    <h3 style="text-align: center; margin-bottom: 2rem; color: #333;">Technical Skills</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <h4>iOS Development</h4>
-                            <p>Swift, SwiftUI, UIKit, Xcode</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4>Android Development</h4>
-                            <p>Kotlin, Jetpack Compose, Android Studio</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4>Cross-Platform</h4>
-                            <p>React Native, Flutter, Xamarin</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4>Backend & APIs</h4>
-                            <p>Node.js, Firebase, REST APIs</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4>Database</h4>
-                            <p>SQLite, Realm, Core Data</p>
-                        </div>
-                        <div class="skill-item">
-                            <h4>Tools & Others</h4>
-                            <p>Git, CI/CD, App Store Optimization</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-
-        <!-- Contact Page -->
-        <div id="contact" class="page">
-            <div class="container">
-                <section class="content-section" style="margin-top: 2rem;">
-                    <h2 class="section-title">Get In Touch</h2>
-                    <p style="text-align: center; font-size: 1.1rem; margin-bottom: 3rem; color: #666;">
-                        Let's discuss your next mobile app project or potential collaboration opportunities.
-                    </p>
-                    
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <h4>Email</h4>
-                            <a href="mailto:alex@example.com">alex@example.com</a>
-                        </div>
-                        <div class="contact-item">
-                            <h4>LinkedIn</h4>
-                            <a href="https://linkedin.com/in/alexchen" target="_blank">linkedin.com/in/alexchen</a>
-                        </div>
-                        <div class="contact-item">
-                            <h4>GitHub</h4>
-                            <a href="https://github.com/alexchen" target="_blank">github.com/alexchen</a>
-                        </div>
-                        <div class="contact-item">
-                            <h4>Location</h4>
-                            <p>San Francisco, CA</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </main>
-
-    <!-- App Detail Modal -->
-    <div id="appModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeAppModal()">&times;</span>
-            <div id="modalContent">
-                <!-- Content will be populated by JavaScript -->
-            </div>
-        </div>
+  <footer>
+    <div class="container">
+      © <span id="y">2025</span> Jared Tamulynas · Lumat Apps
     </div>
+  </footer>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Alex Chen. All rights reserved.</p>
-        </div>
-    </footer>
+  <!-- Project modal -->
+  <dialog id="projectModal" aria-labelledby="projectTitle">
+    <div class="modal-head">
+      <h3 id="projectTitle">Project</h3>
+      <button class="modal-close" aria-label="Close" onclick="closeProject()">×</button>
+    </div>
+    <div class="modal-body" id="projectBody"></div>
+  </dialog>
 
-    <script>
-        // Page navigation
-        function showPage(pageId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-            
-            // Show selected page
-            document.getElementById(pageId).classList.add('active');
-            
-            // Update nav links
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => link.classList.remove('active'));
-            event.target.classList.add('active');
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jared Tamulynas",
+    "jobTitle": "Mobile App Developer",
+    "worksFor": {"@type": "Organization","name": "Lumat Apps"},
+    "url": "https://www.lumatapps.com",
+    "sameAs": [
+      "https://github.com/lumatApps",
+      "https://www.linkedin.com/in/jaredtamulynas/"
+    ],
+    "knowsAbout": ["SwiftUI","Swift","HealthKit","Kotlin","Jetpack Compose","Firebase","Google Cloud","watchOS","Android"]
+  }
+  </script>
+
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = [...document.querySelectorAll('[data-nav]')];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        const id = e.target.getAttribute('id');
+        const link = navLinks.find(a => a.getAttribute('href') === '#' + id);
+        if(!link) return;
+        if(e.isIntersecting){
+          navLinks.forEach(a => a.classList.remove('active'));
+          link.classList.add('active');
         }
+      });
+    }, {rootMargin: "-40% 0px -55% 0px", threshold: 0});
+    sections.forEach(s => io.observe(s));
 
-        // App detail data
-        const appDetails = {
-            taskmaster: {
-                title: "TaskMaster Pro",
-                icon: "📱",
-                description: "TaskMaster Pro is a comprehensive task management solution designed for teams and individuals who need to stay organized and productive. The app combines intuitive design with powerful features to help users manage their daily workflows efficiently.",
-                features: [
-                    "Smart task scheduling with AI recommendations",
-                    "Real-time team collaboration and communication",
-                    "Priority management with customizable categories",
-                    "Time tracking and productivity analytics",
-                    "Cross-platform synchronization",
-                    "Offline mode support"
-                ],
-                technologies: ["React Native", "Firebase", "Redux", "Push Notifications", "REST APIs"],
-                challenges: "The main challenge was implementing real-time collaboration while maintaining app performance. We solved this by implementing efficient data synchronization and optimizing the Redux state management.",
-                downloads: {
-                    appStore: "#",
-                    googlePlay: "#"
-                }
-            },
-            fittrack: {
-                title: "FitTrack",
-                icon: "💪",
-                description: "FitTrack is an AI-powered fitness companion that helps users achieve their fitness goals through personalized workout recommendations and comprehensive progress tracking.",
-                features: [
-                    "AI-powered workout recommendations",
-                    "Integration with Apple HealthKit",
-                    "Progress tracking with detailed analytics",
-                    "Custom workout creation",
-                    "Social features for motivation",
-                    "Wearable device integration"
-                ],
-                technologies: ["Swift", "HealthKit", "Core ML", "CloudKit", "WidgetKit"],
-                challenges: "Integrating machine learning for personalized recommendations while ensuring user privacy was a key challenge. We implemented on-device ML processing to keep user data secure.",
-                downloads: {
-                    appStore: "#"
-                }
-            },
-            budgetwise: {
-                title: "BudgetWise",
-                icon: "💰",
-                description: "BudgetWise helps users take control of their finances through smart budgeting, expense tracking, and financial insights.",
-                features: [
-                    "Automatic expense categorization",
-                    "Bill reminders and notifications",
-                    "Financial goal setting and tracking",
-                    "Bank account integration",
-                    "Spending analytics and reports",
-                    "Budget alerts and recommendations"
-                ],
-                technologies: ["Flutter", "SQLite", "Plaid API", "Firebase Auth"],
-                challenges: "Ensuring secure handling of financial data while providing seamless user experience required implementing robust encryption and following financial data security standards.",
-                downloads: {
-                    googlePlay: "#"
-                }
-            },
-            weatherly: {
-                title: "Weatherly",
-                icon: "🌤️",
-                description: "Weatherly provides accurate weather forecasts with a beautiful, intuitive interface and customizable widgets.",
-                features: [
-                    "Hourly and 7-day forecasts",
-                    "Severe weather alerts",
-                    "Customizable home screen widgets",
-                    "Multiple location support",
-                    "Weather maps and radar",
-                    "Air quality index monitoring"
-                ],
-                technologies: ["Kotlin", "Jetpack Compose", "OpenWeather API", "WorkManager"],
-                challenges: "Creating smooth animations and transitions while maintaining battery efficiency required careful optimization of UI rendering and API calls.",
-                downloads: {
-                    googlePlay: "#"
-                }
-            }
-        };
+    // Simple project data
+    const PROJECTS = {
+      steps: {
+        title: "Steps Toward — iOS & watchOS Journey Tracking",
+        description: "Transform your walks into adventures with destination-based step tracking, elegant progress visuals, and Apple Watch integration.",
+        tech: ["SwiftUI","watchOS","HealthKit","Swift Data"],
+        links: {
+          repo: "https://github.com/lumatApps/steps-toward",
+          store: "" // Add App Store link when ready
+        },
+        screenshots: [
+          "assets/steps-toward-1.png",
+          "assets/steps-toward-2.png",
+          "assets/steps-toward-3.png"
+        ],
+        bullets: [
+          "🎯 Destination-based progress toward real places",
+          "⌚ Native Apple Watch app with realtime sync",
+          "📊 Elegant, legible progress visualizations",
+          "💪 Private-by-design HealthKit integration"
+        ]
+      },
+      plaza: {
+        title: "Plaza — Home & Garden Tour Discovery",
+        description: "Discover curated home & garden tours nearby. Save favorites and explore design inspiration with a swift, focused UI.",
+        tech: ["SwiftUI","MapKit","Firebase","Search & Filters"],
+        links: {
+          repo: "https://github.com/lumatApps/plaza",
+          store: ""
+        },
+        screenshots: [
+          "assets/plaza-1.png",
+          "assets/plaza-2.png",
+          "assets/plaza-3.png"
+        ],
+        bullets: [
+          "🏠 Curated tours with high-quality galleries",
+          "📍 Map-based discovery with sensible defaults",
+          "🔍 Snappy filters for quick narrowing",
+          "☁️ Firebase-backed data sync"
+        ]
+      }
+    };
 
-        // Modal functions
-        function openAppModal(appId) {
-            const app = appDetails[appId];
-            if (!app) return;
+    function openProject(key){
+      const data = PROJECTS[key];
+      if(!data) return;
+      const body = document.getElementById('projectBody');
+      const title = document.getElementById('projectTitle');
+      title.textContent = data.title;
 
-            const modalContent = document.getElementById('modalContent');
-            modalContent.innerHTML = `
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <div class="app-icon" style="margin: 0 auto 1rem auto;">${app.icon}</div>
-                    <h2>${app.title}</h2>
-                </div>
-                
-                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">${app.description}</p>
-                
-                <h3 style="margin-bottom: 1rem;">Key Features</h3>
-                <ul style="margin-bottom: 2rem; padding-left: 1.5rem;">
-                    ${app.features.map(feature => `<li style="margin-bottom: 0.5rem;">${feature}</li>`).join('')}
-                </ul>
-                
-                <h3 style="margin-bottom: 1rem;">Technologies Used</h3>
-                <div class="tech-stack" style="margin-bottom: 2rem;">
-                    ${app.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                </div>
-                
-                <h3 style="margin-bottom: 1rem;">Development Challenges</h3>
-                <p style="margin-bottom: 2rem; line-height: 1.6;">${app.challenges}</p>
-                
-                <div class="screenshot-gallery">
-                    <div class="screenshot">Screenshot 1</div>
-                    <div class="screenshot">Screenshot 2</div>
-                    <div class="screenshot">Screenshot 3</div>
-                </div>
-                
-                <div style="text-align: center; margin-top: 2rem;">
-                    <h3 style="margin-bottom: 1rem;">Download</h3>
-                    <div class="download-links" style="justify-content: center;">
-                        ${app.downloads.appStore ? `<a href="${app.downloads.appStore}" class="download-btn">App Store</a>` : ''}
-                        ${app.downloads.googlePlay ? `<a href="${app.downloads.googlePlay}" class="download-btn">Google Play</a>` : ''}
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('appModal').style.display = 'block';
-        }
+      const chips = data.tech.map(t=>`<span class="chip">${t}</span>`).join("");
+      const shots = data.screenshots.map(s=>`
+        <div class="frame">
+          <img src="${s}" alt="${data.title} screenshot" loading="lazy" />
+        </div>`).join("");
 
-        function closeAppModal() {
-            document.getElementById('appModal').style.display = 'none';
-        }
+      const links = `
+        <div class="card-actions" style="margin-top:10px">
+          <a class="btn" href="${data.links.repo}" target="_blank" rel="noopener">View repo</a>
+          ${data.links.store ? `<a class="btn btn-primary" href="${data.links.store}" target="_blank" rel="noopener">Get the app</a>` : ""}
+        </div>`;
 
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('appModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
+      const bullets = `<ul style="margin:.5rem 0 0 1.1rem">${data.bullets.map(b=>`<li>${b}</li>`).join("")}</ul>`;
 
-        // Smooth scrolling for navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add any initialization code here
-        });
-    </script>
+      body.innerHTML = `
+        <p class="muted">${data.description}</p>
+        <div class="chips" aria-label="Technologies">${chips}</div>
+        ${bullets}
+        <div class="gallery">${shots}</div>
+        ${links}
+      `;
+
+      const dialog = document.getElementById('projectModal');
+      dialog.showModal();
+    }
+    function closeProject(){
+      document.getElementById('projectModal').close();
+    }
+
+    // Respect reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll('*').forEach(el => el.style.scrollBehavior = 'auto');
+    } else {
+      document.documentElement.style.scrollBehavior = 'smooth';
+    }
+  </script>
 </body>
 </html>
